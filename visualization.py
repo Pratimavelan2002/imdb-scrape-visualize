@@ -6,7 +6,8 @@ import re
 
 st.set_page_config(layout="wide")
 
-df = pd.read_csv("D:\project\project1\imdb_2024_movies.csv")
+df = pd.read_csv(r"C:\Users\prati\OneDrive\Desktop\guvi\project1\imdb_2024_movies.csv")
+
 
 def convert_vote_count(vote_str):
     try:
@@ -65,12 +66,12 @@ elif selected_duration == "> 180 min":
 
 st.title(" IMDb 2024 Movies Dashboard")
 
-# 1. Top 10 Movies
+# Top 10 Movies
 st.subheader("Top 10 Movies by Rating & Votes")
 top_movies = filtered_df.sort_values(by=['IMDb Rating', 'Vote Count'], ascending=[False, False]).head(10)
 st.dataframe(top_movies[['Movie Name', 'Genre', 'IMDb Rating', 'Vote Count', 'Duration']])
 
-# 2. Genre Distribution
+# Genre Distribution
 st.subheader(" Genre Distribution")
 genre_counts = filtered_df['Genre'].value_counts()
 fig, ax = plt.subplots()
@@ -79,7 +80,7 @@ ax.set_xlabel("Number of Movies")
 ax.set_ylabel("Genre")
 st.pyplot(fig)
 
-# 3. Average Duration by Genre
+# Average Duration by Genre
 st.subheader("Average Duration by Genre")
 avg_duration = filtered_df.groupby("Genre")["Duration"].mean().sort_values()
 fig, ax = plt.subplots()
@@ -87,7 +88,7 @@ sns.barplot(x=avg_duration.values, y=avg_duration.index, palette="coolwarm", ax=
 ax.set_xlabel("Average Duration (mins)")
 st.pyplot(fig)
 
-# 4. Voting Trends by Genre
+# Voting Trends by Genre
 st.subheader("Average Vote Count by Genre")
 avg_votes = filtered_df.groupby("Genre")["Vote Count"].mean().sort_values(ascending=False)
 fig, ax = plt.subplots()
@@ -95,7 +96,7 @@ sns.barplot(x=avg_votes.values, y=avg_votes.index, ax=ax, palette="magma")
 ax.set_xlabel("Avg. Vote Count")
 st.pyplot(fig)
 
-# 5. Rating Distribution
+# Rating Distribution
 st.subheader(" Rating Distribution")
 fig, ax = plt.subplots()
 sns.histplot(filtered_df['IMDb Rating'], kde=True, bins=15, color='skyblue', ax=ax)
@@ -103,12 +104,12 @@ ax.set_xlabel("IMDb Rating")
 ax.set_ylabel("Frequency")
 st.pyplot(fig)
 
-# 6. Genre-Based Rating Leaders
+# Genre-Based Rating Leaders
 st.subheader("Top-Rated Movie per Genre")
 top_genre_movies = filtered_df.sort_values("IMDb Rating", ascending=False).drop_duplicates("Genre")
 st.dataframe(top_genre_movies[['Genre', 'Movie Name', 'IMDb Rating']])
 
-# 7. Most Popular Genres by Total Votes
+#  Most Popular Genres by Total Votes
 st.subheader("Most Popular Genres by Total Votes")
 total_votes = filtered_df.groupby("Genre")["Vote Count"].sum()
 fig, ax = plt.subplots()
@@ -116,21 +117,21 @@ ax.pie(total_votes, labels=total_votes.index, autopct='%1.1f%%', startangle=140)
 ax.axis('equal')
 st.pyplot(fig)
 
-# 8. Duration Extremes
+#  Duration Extremes
 st.subheader(" Duration Extremes")
 shortest = filtered_df.sort_values("Duration").head(1)
 longest = filtered_df.sort_values("Duration").tail(1)
 st.markdown(f"**Shortest Movie:** {shortest.iloc[0]['Movie Name']} ({shortest.iloc[0]['Duration']} mins)")
 st.markdown(f"**Longest Movie:** {longest.iloc[0]['Movie Name']} ({longest.iloc[0]['Duration']} mins)")
 
-# 9. Ratings by Genre (Heatmap)
+#  Ratings by Genre (Heatmap)
 st.subheader("Heatmap of Avg Ratings by Genre")
 heatmap_data = filtered_df.groupby("Genre")["IMDb Rating"].mean().to_frame()
 fig, ax = plt.subplots()
 sns.heatmap(heatmap_data, annot=True, cmap="YlGnBu", ax=ax)
 st.pyplot(fig)
 
-# 10. Correlation: Rating vs Votes
+#  Correlation: Rating vs Votes
 st.subheader("Correlation: Rating vs Vote Count")
 fig, ax = plt.subplots()
 sns.scatterplot(data=filtered_df, x="Vote Count", y="IMDb Rating", hue="Genre", ax=ax)
