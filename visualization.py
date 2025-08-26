@@ -6,7 +6,8 @@ import re
 
 st.set_page_config(layout="wide")
 
-df = pd.read_csv(r"C:\Users\prati\OneDrive\Desktop\guvi\project1\imdb_2024_movies.csv")
+df = pd.read_csv("imdb_2024_movies.csv")
+
 
 
 def convert_vote_count(vote_str):
